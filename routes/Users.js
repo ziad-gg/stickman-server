@@ -19,7 +19,7 @@ route.get('/:id', async (req, res) => {
     const error = UTILS.checkNullProps(data);
 
     if (error) {
-        res.status(201).json({ message: error, code: 402 }).end();
+        res.status(201).json({ message: error, code: 101 }).end();
         return;
     };
 
@@ -65,7 +65,7 @@ route.post('/', async (req, res) => {
     const error = UTILS.checkNullProps(data);
 
     if (error) {
-        res.status(201).json({ message: error, code: 400 }).end();
+        res.status(201).json({ message: error, code: 101 }).end();
         return;
     };
 
