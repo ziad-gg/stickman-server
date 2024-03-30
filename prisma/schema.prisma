@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+type Total {
+  coins    Int @default(0)
+  damage   Int @default(0)
+  eggs     Int    @default(0)
+  playtime Int @default(0)
+  robux    Int    @default(0)
+  worlds   Int    @default(0)
+  levels   Int    @default(0)
+  xp       Int    @default(0)
+}
+
+model User {
+  id     Int   @id @map("_id")
+  coins  Int   @default(0)
+  doors  Int
+  sticks Int[]
+  total  Total
+}
+
+model Code {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  code   String @unique
+  reward String
+  limit  Int
+  used   Int[]
+}
