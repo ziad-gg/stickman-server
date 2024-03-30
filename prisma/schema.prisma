@@ -10,12 +10,12 @@ datasource db {
 type Total {
   coins    Int @default(0)
   damage   Int @default(0)
-  eggs     Int    @default(0)
+  eggs     Int @default(0)
   playtime Int @default(0)
-  robux    Int    @default(0)
-  worlds   Int    @default(0)
-  levels   Int    @default(0)
-  xp       Int    @default(0)
+  robux    Int @default(0)
+  worlds   Int @default(0)
+  levels   Int @default(0)
+  xp       Int @default(0)
 }
 
 model User {
@@ -31,5 +31,5 @@ model Code {
   code   String @unique
   reward String
   limit  Int
-  used   Int[]
+  used   Int[]  @default([])
 }
