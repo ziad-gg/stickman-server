@@ -11,8 +11,13 @@ app.all('/ping', (req, res) => {
     res.json({ message: 'pong' }).end();
 });
 
-app.get('/api/users', async (req, res) => {
-    const body = req.body;
+/**
+ * Error Code {401} // User Not Found
+ * Error Code {402} // Invalid User Id
+ * Error Code {400} // Error While Finding User
+ */
+app.get('/api/users/:id', async (req, res) => {
+    const body = req.params;
 
     const data = {
         id: body.id
@@ -21,13 +26,21 @@ app.get('/api/users', async (req, res) => {
     const error = UTILS.checkNullProps(data);
 
     if (error) {
-        res.status(201).json({ message: error, code: 400 }).end();
+        res.status(201).json({ message: error, code: 402 }).end();
         return;
     };
 
-    const User = await DB.user.findFirst({ where: data });
+    if (typeof data.id != 'string') {
+        return res.status(201).json({ message: 'Argument `id`: Invalid value provided. Expected IntFilter or Int, provided String.', code: 402 }).end();
+    };
 
-    if (!User) {
+    data.id = +data.id
+
+    const User = await DB.user.findFirst({ where: data }).catch(e => { return { e } });
+    if (User.e) {
+        console.log(User.e);
+        return res.status(201).json({ message: 'Error While Getting This User', error: User.e, code: 400 }).end();
+    } else if (!User) {
         res.status(201).json({ message: 'User Not Found', code: 401 }).end();
         return;
     };
