@@ -3,6 +3,7 @@
 --(101) Invalid Missing Argument
 
 `USERS`
+
 -- `/:userId`
 
 ----(401) User Not Found
@@ -15,11 +16,15 @@
 
 ----(200) DONE
 
+
 -- `/`
 
 ----(400) Server Error
 
 ----(200) DONE
+
+
+
 
 `CODES`
 
