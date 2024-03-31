@@ -113,7 +113,7 @@ route.post('/redeem', async (req, res) => {
         }
     });
 
-    res.status(200).json({ code: 200 }).end();
+    res.status(200).json({ code: 200, reward: CData.reward }).end();
 });
 
 module.exports = route;
