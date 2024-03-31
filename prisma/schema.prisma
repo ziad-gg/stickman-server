@@ -19,11 +19,12 @@ type Total {
 }
 
 model User {
-  id     Int   @id @map("_id")
-  coins  Int   @default(0)
-  doors  Int
-  sticks Int[]
-  total  Total
+  id       Int   @id @map("_id")
+  coins    Int   @default(0)
+  doors    Int
+  sticks   Int[]
+  equipped Int[]
+  total    Total
 }
 
 model Code {

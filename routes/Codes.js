@@ -87,11 +87,11 @@ route.post('/redeem', async (req, res) => {
     const UData = await DB.user.findFirst({ where: { id: data.userId } });
 
     if (!CData) {
-        return res.status(201).json({ code: 401, message: 'code is not already found', type: 'Code' }).end();
+        return res.status(201).json({ code: 401, message: 'code is not found', type: 'Code' }).end();
     }
 
     if (!UData) {
-        return res.status(201).json({ code: 401, message: 'User is not already found', type: 'User' }).end();
+        return res.status(201).json({ code: 401, message: 'User is not found', type: 'User' }).end();
     }
 
     if (CData.used.length >= CData.limit) {

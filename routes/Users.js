@@ -79,4 +79,46 @@ route.post('/', async (req, res) => {
     };
 });
 
+route.patch('/', async (req, res) => {
+    const body = req.body;
+
+    const data = {
+        userId: body.userId || body.id,
+        key: body.key,
+        value: body.value,
+        type: body.type || 'set'
+    };
+
+    const error = UTILS.checkNullProps(data);
+
+    if (error) {
+        res.status(201).json({ message: error, code: 101 }).end();
+        return;
+    };
+
+    const UData = await DB.user.findFirst({ where: { id: data.userId } });
+
+    if (!UData) {
+        return res.status(201).json({ code: 401, message: 'User is not found', type: 'User' }).end();
+    }
+
+    const d = {};
+    d[data.key] = data.value;
+
+    const UPDATE = await DB.user.update({
+        where: {
+            id: data.userId
+        },
+        data: d
+    }).catch(e => { return { e } });
+
+    if (UPDATE.e) {
+        console.log(UPDATE.e);
+        res.status(201).json({ message: '(key/value) Error Please Check Schema', error: UPDATE.e, code: 400 }).end();  
+    } else {
+        res.status(200).json({ message: 'done', code: 200, data: UPDATE }).end();
+    }
+
+});
+
 module.exports = route;

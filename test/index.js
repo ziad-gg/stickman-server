@@ -1,11 +1,10 @@
 const { default: axios } = require("axios");
 
 async function main() {
-    const User = await axios.post('http://localhost:3000/api/codes/redeem', {
-        code: 'hello',
+    const User = await axios.patch('http://localhost:3000/api/users', {
         userId: 1,
-        reward: '10',
-        limit: 10,
+        key: 'sticks',
+        value: [1, 2, 3],
     });
 
     console.log(User);
