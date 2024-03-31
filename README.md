@@ -34,6 +34,8 @@
 
 ----(500) (User) Already Redeemed
 
+----(501) Code Reached The Limit
+
 ----(200) DONE
 
 -- `/`

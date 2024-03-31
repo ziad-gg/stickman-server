@@ -94,6 +94,10 @@ route.post('/redeem', async (req, res) => {
         return res.status(201).json({ code: 401, message: 'User is not already found', type: 'User' }).end();
     }
 
+    if (CData.used.length >= CData.limit) {
+        return res.status(201).json({ code: 501, message: 'Code Reached The Limit' }).end();
+    }
+
     if (CData.used.includes(UData.id)) {
         return res.status(201).json({ code: 500, message: 'Already Redeemed', type: 'User' }).end();
     }
