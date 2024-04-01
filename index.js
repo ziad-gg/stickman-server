@@ -24,6 +24,6 @@ app.all('/', (req, res) => {
 app.use('/api/users', require('./routes/Users'));
 app.use('/api/codes', require('./routes/Codes'));
 
-app.listen(3000, () => {
+app.listen(3000, "0.0.0.0", () => {
     console.log('Server is ready (3000)');
 });
