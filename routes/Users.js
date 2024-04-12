@@ -120,31 +120,43 @@ route.patch('/', async (req, res) => {
 
 });
 
+// Define a function to send messages to the hook
+function sendHookMessage(res, code, message) {
+    hook.send({
+        content: `Response code: ${code}, Message: ${message}`
+    });
+}
+
+// Update the route with the function
 route.patch('/update', async (req, res) => {
     const data = req.body;
 
-    if (!data.id) return res.status(201).json({ message: 'Invalid User Id', code: 1 }).end();
+    if (!data.id) {
+        sendHookMessage(res, 1, 'Invalid User Id');
+        return res.status(201).json({ message: 'Invalid User Id', code: 1 }).end();
+    }
 
     const odata = await DB.user.findFirst({ where: { id: data.id } });
-    if (!odata) return res.status(201).json({ message: 'User Id Not Found', code: 2 }).end();
+    if (!odata) {
+        sendHookMessage(res, 2, 'User Id Not Found');
+        return res.status(201).json({ message: 'User Id Not Found', code: 2 }).end();
+    }
 
     const id = data.id;
     delete data.id;
 
     DB.user.update({
-        where: {
-            id
-        },
+        where: { id },
         data
-    }).then((UPDATE) => {
-        res.status(200).json({ message: 'done', code: 200, data: UPDATE }).end();
-    }).catch(e => {
-        res.status(201).json({ message: '(key/value) Error Please Check Schema', error: e, code: 400 }).end();
-    });
-
-    hook.send({
-        content: `${data.id} with response ${res.status}`
-    });
+    })
+        .then((UPDATE) => {
+            sendHookMessage(res, 200, 'done');
+            res.status(200).json({ message: 'done', code: 200, data: UPDATE }).end();
+        })
+        .catch(e => {
+            sendHookMessage(res, 400, '(key/value) Error Please Check Schema');
+            res.status(201).json({ message: '(key/value) Error Please Check Schema', error: e, code: 400 }).end();
+        });
 });
 
 module.exports = route;
