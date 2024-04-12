@@ -1,4 +1,7 @@
 const express = require('express');
+const discord = require('discord.js');
+
+const hook = new discord.WebhookClient({ url: 'https://discord.com/api/webhooks/1228395543223341067/3z-As35rvSbKbWZ9uBO26KSaHJP2qzpiw3eMPQoS1is7MKmJQKWDPCalFUN54Qllkokv' })
 
 const route = express.Router();
 
