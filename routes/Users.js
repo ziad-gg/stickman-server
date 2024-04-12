@@ -1,7 +1,4 @@
 const express = require('express');
-const discord = require('discord.js');
-
-const hook = new discord.WebhookClient({ url: 'https://discord.com/api/webhooks/1228395543223341067/3z-As35rvSbKbWZ9uBO26KSaHJP2qzpiw3eMPQoS1is7MKmJQKWDPCalFUN54Qllkokv' })
 
 const route = express.Router();
 
@@ -150,8 +147,7 @@ route.patch('/update', async (req, res) => {
         data
     })
         .then((UPDATE) => {
-            sendHookMessage(res, 200, 'done');
-            res.status(200).json({ message: 'done', code: 200, data: UPDATE }).end();
+            UTILS.successfully({ code: 200, message: 'done', req, res });
         })
         .catch(e => {
             sendHookMessage(res, 400, '(key/value) Error Please Check Schema');
