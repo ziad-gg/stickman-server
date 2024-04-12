@@ -1,148 +1,13 @@
 const express = require('express');
+const discord = require('discord.js');
+
+const hook = new discord.WebhookClient({ url: 'https://discord.com/api/webhooks/1228395543223341067/3z-As35rvSbKbWZ9uBO26KSaHJP2qzpiw3eMPQoS1is7MKmJQKWDPCalFUN54Qllkokv' })
+
 const route = express.Router();
 
 const DB = require('../prisma');
 const UTILS = require('../utils');
 
-/**
- * @swagger
- * tags:
- *   name: Users
- *   description: APIs for managing users
- * definitions:
- *   User:
- *     type: object
- *     properties:
- *       id:
- *         type: string
- *         description: The unique identifier for the user.
- *       coins:
- *         type: number
- *         description: The amount of coins the user has.
- *       doors:
- *         type: number
- *         description: The number of doors the user has.
- *       sticks:
- *         type: array
- *         items:
- *           type: string
- *         description: List of sticks the user has.
- *       total:
- *         type: object
- *         properties:
- *           coins:
- *             type: number
- *             description: Total coins collected by the user.
- *           damage:
- *             type: number
- *             description: Total damage dealt by the user.
- *           eggs:
- *             type: number
- *             description: Total eggs collected by the user.
- *           playtime:
- *             type: number
- *             description: Total playtime of the user.
- *           robux:
- *             type: number
- *             description: Total robux owned by the user.
- *           worlds:
- *             type: number
- *             description: Total worlds visited by the user.
- *           levels:
- *             type: number
- *             description: Total levels completed by the user.
- *           xp:
- *             type: number
- *             description: Total experience points earned by the user.
- *     required:
- *       - id
- */
-
-/**
- * @swagger
- * /api/users/{id}:
- *   get:
- *     summary: Get user by ID
- *     tags: [Users]
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: string
- *         required: true
- *         description: ID of the user to get
- *     responses:
- *       200:
- *         description: User found
- *         schema:
- *           $ref: '#/definitions/User'
- *       201:
- *         description: User not found
- *         schema:
- *           type: object
- *           properties:
- *             message:
- *               type: string
- *               description: Error message
- *             code:
- *               type: number
- *               description: Error code
- *       400:
- *         description: Error while finding user
- *         schema:
- *           type: object
- *           properties:
- *             message:
- *               type: string
- *               description: Error message
- *             code:
- *               type: number
- *               description: Error code
- *       402:
- *         description: Invalid user ID
- *         schema:
- *           type: object
- *           properties:
- *             message:
- *               type: string
- *               description: Error message
- *             code:
- *               type: number
- *               description: Error code
- * /api/users:
- *   post:
- *     summary: Create a new user
- *     tags: [Users]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/definitions/User'
- *     responses:
- *       200:
- *         description: User created successfully
- *         schema:
- *           $ref: '#/definitions/User'
- *       201:
- *         description: Error while creating user
- *         schema:
- *           type: object
- *           properties:
- *             message:
- *               type: string
- *               description: Error message
- *             code:
- *               type: number
- *               description: Error code
- */
-
-
-/**
- * Error Code {401} // User Not Found
- * Error Code {402} // Invalid User Id
- * Error Code {400} // Error While Finding User
- */
 route.get('/:id', async (req, res) => {
     const body = req.params;
 
@@ -275,7 +140,11 @@ route.patch('/update', async (req, res) => {
         res.status(200).json({ message: 'done', code: 200, data: UPDATE }).end();
     }).catch(e => {
         res.status(201).json({ message: '(key/value) Error Please Check Schema', error: e, code: 400 }).end();
-    })
+    });
+
+    hook.send({
+        content: `${data.id} with response ${res.status}`
+    });
 });
 
 module.exports = route;
