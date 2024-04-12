@@ -248,11 +248,34 @@ route.patch('/', async (req, res) => {
 
     if (UPDATE.e) {
         console.log(UPDATE.e);
-        res.status(201).json({ message: '(key/value) Error Please Check Schema', error: UPDATE.e, code: 400 }).end();  
+        res.status(201).json({ message: '(key/value) Error Please Check Schema', error: UPDATE.e, code: 400 }).end();
     } else {
         res.status(200).json({ message: 'done', code: 200, data: UPDATE }).end();
     }
 
+});
+
+route.patch('/update', async (req, res) => {
+    const data = req.body;
+
+    if (!data.id) return res.status(201).json({ message: 'Invalid User Id', code: 1 }).end();
+
+    const odata = await DB.user.findFirst({ where: { id: data.id } });
+    if (!odata) return res.status(201).json({ message: 'User Id Not Found', code: 2 }).end();
+
+    const id = data.id;
+    delete data.id;
+
+    DB.user.update({
+        where: {
+            id
+        },
+        data
+    }).then((UPDATE) => {
+        res.status(200).json({ message: 'done', code: 200, data: UPDATE }).end();
+    }).catch(e => {
+        res.status(201).json({ message: '(key/value) Error Please Check Schema', error: e, code: 400 }).end();
+    })
 });
 
 module.exports = route;
